@@ -11,7 +11,7 @@
       "aardpack": {
           "version": "1.0.11",
           "commands": [
-                "aardpack"
+              "aardpack"
           ]
       }
     }

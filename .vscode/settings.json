@@ -1,7 +1,11 @@
 {
     "C_Cpp.default.includePath": [
-        "./vcpkg/packages/flann_arm64-osx/include",
-        "src/FlannNative"
+        "./vcpkg/packages/flann_arm64-osx/include/",
+        "src/FlannNative/"
+    ],
+    "C_Cpp.default.systemIncludePath": [
+        "./vcpkg/packages/flann_arm64-osx/include/",
+        "src/FlannNative/"
     ],
     "files.exclude": {
         "**/.git": true,
@@ -13,7 +17,7 @@
         "**/obj/" : true,
         ".paket": true,
         ".ionide": true,
-        ".vcpkg": true,
+        //".vcpkg": true,
         "paket-files": true,
     }
 }

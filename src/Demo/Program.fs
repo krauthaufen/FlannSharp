@@ -1,30 +1,25 @@
 ﻿open Flann
 open Aardvark.Base
-
+open System.IO
 #nowarn "9"
 
 Aardvark.Init()
 
-let rand = RandomSystem()
+let a = File.ReadAllBytes "/Users/Schorsch/Desktop/mondo/bytes0" |> Array.map float32
+let b = File.ReadAllBytes "/Users/Schorsch/Desktop/mondo/bytes1" |> Array.map float32
+
+let dim = 61
+let ca = a.Length / dim
+let cb = b.Length / dim
 
 
-let cnt = 1024
-let a =
-    Array.init cnt (fun _ ->
-        rand.UniformV3f()
-    )
-    |> Array.collect (fun v -> [|v.X; v.Y; v.Z|])
+let ia = Index.Build(a, ca, dim)
 
 
-let b =
-    Array.init cnt (fun _ ->
-        rand.UniformV3f()
-    )
-    |> Array.collect (fun v -> [|v.X; v.Y; v.Z|])
+let sw = System.Diagnostics.Stopwatch.StartNew()
+let res = ia.FindClosest2(b, cb)
+sw.Stop()
 
 
-let ia = Index.Build(a, cnt, 3)
 
-
-let res = ia.FindClosest2(b, cnt)
-printfn "%A" res
+printfn "%A (%.3fs)" res sw.Elapsed.TotalSeconds

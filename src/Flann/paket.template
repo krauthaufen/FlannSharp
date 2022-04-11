@@ -1,0 +1,9 @@
+type project
+id Flann
+authors The Aardvark Platform Team
+projectUrl https://github.com/krauthaufen/FlannSharp
+licenseUrl http://www.apache.org/licenses/LICENSE-2.0.txt
+repositoryType git
+repositoryUrl https://github.com/krauthaufen/FlannSharp
+description
+    Flann

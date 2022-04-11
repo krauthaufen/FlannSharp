@@ -8,11 +8,11 @@ ARCH_FLAGS=""
 
 a="/$0"; a=${a%/*}; a=${a#/}; a=${a:-.}; BASEDIR=$(cd "$a"; pwd)
 
-# mono .config/nuget.exe setApiKey -Source GitHub $GITHUB_TOKEN -NonInteractive
+mono .config/nuget.exe setApiKey -Source GitHub $GITHUB_TOKEN -NonInteractive
 
-# rm -dfr .vcpkg
-# mkdir .vcpkg
-# git clone https://github.com/Microsoft/vcpkg.git ./.vcpkg/vcpkg --depth 1
+rm -dfr .vcpkg
+mkdir .vcpkg
+git clone https://github.com/Microsoft/vcpkg.git ./.vcpkg/vcpkg --depth 1
 
 if [ "$OS" = "Darwin" ];
 then
@@ -39,10 +39,9 @@ else
     VCPKG_TRIPLET="x64-linux-release"
 fi
 
-# ./.vcpkg/vcpkg/bootstrap-vcpkg.sh
-# export VCPKG_NUGET_REPOSITORY=https://github.com/aardvark-community/FlannSharp
-./.vcpkg/vcpkg/vcpkg install flann --triplet $VCPKG_TRIPLET 
-#--binarysource='clear;nuget,GitHub,readwrite;nugettimeout,1000'
+./.vcpkg/vcpkg/bootstrap-vcpkg.sh
+export VCPKG_NUGET_REPOSITORY=https://github.com/krauthaufen/FlannSharp
+./.vcpkg/vcpkg/vcpkg install flann --triplet $VCPKG_TRIPLET --binarysource='clear;nuget,GitHub,readwrite;nugettimeout,1000'
 
 
 rm -dfr src/FlannNative/build
