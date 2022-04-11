@@ -26,6 +26,7 @@ endif()
 
 add_library(FlannNative SHARED FlannNative.h FlannNative.cpp)
 target_link_libraries(FlannNative PRIVATE flann::flann_s flann::flann_cpp_s)
+target_compile_definitions(FlannNative PRIVATE FLANN_STATIC)
 
 SET(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}/../../libs/Native/Flann/") 
 install(TARGETS FlannNative DESTINATION ${OS}/${ARCH})

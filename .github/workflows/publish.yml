@@ -27,7 +27,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
         run: ./buildnative.sh x86_64
-      - name: Install Dotnet 
+      - name: Install Dotnet
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '6.0.100'

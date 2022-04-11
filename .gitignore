@@ -36,3 +36,5 @@ Aardvark.log
 /*/**/.vscode
 /libs
 /.vcpkg
+.vs
+.ionide
