@@ -1,3 +1,6 @@
+### 0.0.4
+* copying input-data on build
+
 ### 0.0.3
 * netstandard2.1
 

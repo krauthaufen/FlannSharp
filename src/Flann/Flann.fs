@@ -147,14 +147,23 @@ module FlannRaw =
     extern int flFindNearest(FlannIndexHandle index, float32* data, int rows, int cols, int* indices, float32* dists, int nn)
 
 
-type Index private(handle : FlannRaw.FlannIndexHandle, rows : int, cols : int) =
+type Index private(handle : FlannRaw.FlannIndexHandle, rows : int, cols : int, data : nativeptr<float32>) =
     let mutable handle = handle
+    let mutable data = data
 
     static member Build(mem : nativeptr<float32>, rows : int, cols : int, ?pars : Parameters) =
+        let count = rows * cols 
+        let size = nativeint count * nativeint sizeof<float32>
+        let copy = Marshal.AllocHGlobal size |> NativePtr.ofNativeInt<float32>
+
+        let src = Span<float32>(NativePtr.toVoidPtr mem, count)
+        let dst = Span<float32>(NativePtr.toVoidPtr copy, count)
+        src.CopyTo dst
+
         let mutable pars = defaultArg pars Parameters.Default
-        let handle = FlannRaw.flBuildIndex(mem, rows, cols, &pars)
+        let handle = FlannRaw.flBuildIndex(copy, rows, cols, &pars)
         if handle.IsNull then failwith "[Flann] failed to build index"
-        new Index(handle, rows, cols)
+        new Index(handle, rows, cols, copy)
 
     static member Build(mem : Memory<float32>, rows : int, cols : int, ?pars : Parameters) =
         use ptr = mem.Pin()
@@ -261,14 +270,16 @@ type Index private(handle : FlannRaw.FlannIndexHandle, rows : int, cols : int) =
         x.FindClosestK(h, rows, k)
 
 
-
+    member x.Data = data
     member x.Handle = handle
 
     member x.Dispose(disposing : bool) =
-        if disposing then GC.SuppressFinalize x
         if not handle.IsNull then
+            if disposing then GC.SuppressFinalize x
             FlannRaw.flDeleteIndex handle
             handle <- FlannRaw.FlannIndexHandle.Null
+            Marshal.FreeHGlobal (NativePtr.toNativeInt data)
+            data <- NativePtr.ofNativeInt 0n
 
     member x.Dispose() = x.Dispose true
 
