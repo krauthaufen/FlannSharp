@@ -1,3 +1,6 @@
+### 0.0.5
+* Index exposing Rows/Cols
+
 ### 0.0.4
 * copying input-data on build
 

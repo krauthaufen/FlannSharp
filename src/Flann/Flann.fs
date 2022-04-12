@@ -271,6 +271,8 @@ type Index private(handle : FlannRaw.FlannIndexHandle, rows : int, cols : int, d
 
 
     member x.Data = data
+    member x.Rows = rows
+    member x.Cols = cols
     member x.Handle = handle
 
     member x.Dispose(disposing : bool) =
