@@ -160,7 +160,7 @@ jobs:
       - name: Download MacOS dependencies (arm64)
         uses: actions/download-artifact@v2
         with:
-          name: mac_arm64
+          name: mac_arm64 
           path: libs/Native/Flann/mac/ARM64/
       - name: Download Linux dependencies 
         uses: actions/download-artifact@v2
