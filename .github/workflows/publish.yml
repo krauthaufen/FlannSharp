@@ -35,6 +35,8 @@ jobs:
         run: dotnet tool restore
       - name: Restore
         run: dotnet paket restore
+      - name: Test
+        run: dotnet run --project src/Demo/Demo.fsproj
       - name: Upload MacOS native libs
         uses: actions/upload-artifact@v2
         with:
@@ -93,6 +95,8 @@ jobs:
         run: dotnet tool restore
       - name: Restore
         run: dotnet paket restore
+      - name: Test
+        run: dotnet run --project src/Demo/Demo.fsproj
       - name: Upload Linux native libs
         uses: actions/upload-artifact@v2
         with:
@@ -129,6 +133,8 @@ jobs:
       - name: Restore
         shell: cmd
         run: dotnet paket restore
+      - name: Test
+        run: dotnet run --project src\Demo\Demo.fsproj
       - name: Upload Windows native libs
         uses: actions/upload-artifact@v2
         with:

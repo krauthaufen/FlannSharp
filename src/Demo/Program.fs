@@ -6,11 +6,13 @@ open System.IO
 [<EntryPoint>]
 let main argv =
     Aardvark.Init()
-
-    let a = File.ReadAllBytes "/Users/Schorsch/Desktop/mondo/bytes0" |> Array.map float32
-    let b = File.ReadAllBytes "/Users/Schorsch/Desktop/mondo/bytes1" |> Array.map float32
-
+    
+    let rand = RandomSystem()
     let dim = 61
+    let cnt = 10000
+    let a = Array.init (dim * cnt) (fun _ -> rand.UniformFloat())
+    let b = Array.init (dim * cnt) (fun _ -> rand.UniformFloat())
+
     let ca = a.Length / dim
     let cb = b.Length / dim
 
