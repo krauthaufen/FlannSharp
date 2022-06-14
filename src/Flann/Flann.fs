@@ -219,6 +219,34 @@ type Index private(handle : FlannRaw.FlannIndexHandle, rows : int, cols : int, d
                 result.[qi] <- struct(i0, d0, i1, d1)
             result
         
+    member x.FindClosest3(query : nativeptr<float32>, queryRows : int) =
+        if queryRows <= 0 || rows < 2 then
+            [||]
+        else
+            let indices = Array.zeroCreate<int> (3 * queryRows)
+            let dists = Array.zeroCreate<float32> (3 * queryRows)
+            use pIndices = fixed indices
+            use pDists = fixed dists
+            let ret = FlannRaw.flFindNearest(handle, query, queryRows, cols, pIndices, pDists, 3)
+            if ret <> 0 then failwith "[Flann] failed to find closest"
+
+            let result = Array.zeroCreate queryRows
+            let mutable ri = 0
+            for qi in 0 .. queryRows - 1 do
+
+                let i0 = indices.[ri]
+                let d0 = dists.[ri]
+                ri <- ri + 1
+                let i1 = indices.[ri]
+                let d1 = dists.[ri]
+                ri <- ri + 1
+                let i2 = indices.[ri]
+                let d2 = dists.[ri]
+                ri <- ri + 1
+
+                result.[qi] <- struct(i0, d0, i1, d1, i2, d2)
+            result
+        
     member x.FindClosestK(query : nativeptr<float32>, queryRows : int, k : int) =
         if queryRows <= 0 || rows <= 1 then
             [||]
@@ -236,8 +264,8 @@ type Index private(handle : FlannRaw.FlannIndexHandle, rows : int, cols : int, d
             for qi in 0 .. queryRows - 1 do
                 let part = Array.zeroCreate k
                 for ki in 0 .. k - 1 do
-                    let i = indices.[ri + ki]
-                    let d = dists.[ri + ki]
+                    let i = indices.[ri]
+                    let d = dists.[ri]
                     part.[ki] <- struct(i, d)
                     ri <- ri + 1
                 result.[qi] <- part

@@ -1,5 +1,8 @@
+### 0.0.7
+* fixed FindClosestK and added FindClosest3
+
 ### 0.0.6
-* fixed GOMP linux problem
+* fixed GOMP linux problem--
 
 ### 0.0.5
 * Index exposing Rows/Cols
